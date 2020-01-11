@@ -5,7 +5,7 @@
 const cheerio = require("cheerio");
 const axios = require("axios");
 
-async function getTitleLink() {
+async function getTitleLink(filter) {
   const urlArr = [
     "https://old.reddit.com/r/vinylreleases",
     "https://old.reddit.com/r/VinylReleases/?count=25&after=t3_ehlmpi",
@@ -15,7 +15,7 @@ async function getTitleLink() {
   let links = [];
 
   for (let i = 0; i < urlArr.length; i++) {
-    await axios.get(urlArr[i]).then(function (response) {
+    await axios.get(urlArr[i]).then(response => {
 
       let $ = cheerio.load(response.data);
 
@@ -23,13 +23,13 @@ async function getTitleLink() {
       let result = {};
 
       // Loop through all the titles in the page
-      // Add the title and link if it is to a light in the attic release
+      // Add the title and link if it is to a release that matches the filter.
       $("a.title").each(function (iter, element) {
 
         let title = $(element).text();
         let link = $(element).attr("href");
 
-        if (link.includes("lightintheattic")) {
+        if (link.includes(filter)) {
           result = {
             page: i + 1,
             title: title,
