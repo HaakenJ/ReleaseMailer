@@ -36,9 +36,9 @@ function returnAllData(path) {
             var data = allTextLines[i].split(',');
 
 
-            var tarr = [];
+            var tarr = {};
             for (var j = 0; j < headers.length; j++) {
-                tarr.push(headers[j] + ":" + data[j]);
+                tarr[headers[j]] = data[j];
             }
             lines.push(tarr);
 
@@ -61,15 +61,21 @@ function getArtists(path) {
             var data = allTextLines[i].split(',');
 
 
-            var tarr = [];
+            var tarr = {};
             for (var j = 0; j < headers.length; j++) {
-                tarr.push(headers[j] + ":" + data[j]);
+                tarr[headers[j]] = data[j];
             }
             lines.push(tarr);
 
         }
-        for (let i = 0; i < lines.length; i++) {
 
+        let artists = [];
+        for (let i = 0; i < lines.length; i++) {
+            artists.push(lines[i][1]);
         }
+        console.log(artists);
+        return artists;
     });
 };
+
+returnAllData('./wantlist/wantlist.csv');
