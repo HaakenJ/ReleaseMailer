@@ -85,15 +85,37 @@ function getKeyWords(artists) {
         '&': true,
         'one': true,
         'love': true,
-
+        'new': true,
+        'various': true,
+        'with': true,
+        'of': true,
+        'joe': true,
+        'players': true,
+        'friends': true,
+        'earth': true,
+        'brother': true,
+        'jack': true,
+        'charlie': true,
+        'order': true,
+        'family': true,
+        'swing': true,
+        'slow': true,
+        '/': true,
+        'vs': true,
+        '': true,
+        'count': true,
+        'big': true,
+        'tom': true,
+        'true': true,
+        'alex': true
     }
     const keyWordsMap = {};
     for (const artist of artists) {
         if (artist === undefined) continue;
         const keyWords = artist.split(' ');
-        for (const keyWord of keyWords) {
-            keyWord = keyWord.replace('"', '');
-            keyWord = keyWord.replace("'", '');
+        for (let keyWord of keyWords) {
+            keyWord = keyWord.replace(/["'.]/g, '');
+            if (skipWords[keyWord.toLowerCase()]) continue;
             keyWordsMap[keyWord] = true;
         }
     }
