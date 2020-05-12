@@ -43,48 +43,68 @@ function returnAllData(path) {
             lines.push(tarr);
 
         }
-        console.log(lines);
         return lines;
     });
 };
 
 function getArtists(path) {
 
-    fs.readFile(path, 'utf-8', (err, allText) => {
-        if (err) throw err;
+    return new Promise((resolve, reject) => {
+        fs.readFile(path, 'utf-8', (err, allText) => {
+            if (err) throw err;
 
-        const allTextLines = allText.split(/\r\n|\n/);
-        const headers = allTextLines[0].split(',');
-        const lines = [];
+            const allTextLines = allText.split(/\r\n|\n/);
+            const headers = allTextLines[0].split(',');
+            const lines = [];
 
-        for (let i = 1; i < allTextLines.length; i++) {
-            const data = allTextLines[i].split(',');
+            for (let i = 1; i < allTextLines.length; i++) {
+                const data = allTextLines[i].split(',');
 
 
-            const currentArtistObj = {};
-            for (let j = 0; j < headers.length; j++) {
-                currentArtistObj[headers[j]] = data[j];
+                const currentArtistObj = {};
+                for (let j = 0; j < headers.length; j++) {
+                    currentArtistObj[headers[j]] = data[j];
+                }
+                lines.push(currentArtistObj);
+
             }
-            lines.push(currentArtistObj);
 
-        }
-
-        const artists = [];
-        for (let i = 0; i < lines.length; i++) {
-            artists.push(lines[i]['Artist']);
-        }
-        console.log(artists);
-        return artists;
-    });
+            const artists = [];
+            for (let i = 0; i < lines.length; i++) {
+                artists.push(lines[i]['Artist']);
+            }
+            resolve(artists);
+        })
+    })
 };
 
 function getKeyWords(artists) {
-    
+    const skipWords = {
+        'the': true,
+        'and': true,
+        '&': true,
+        'one': true,
+        'love': true,
+
+    }
+    const keyWordsMap = {};
+    for (const artist of artists) {
+        if (artist === undefined) continue;
+        const keyWords = artist.split(' ');
+        for (const keyWord of keyWords) {
+            keyWord = keyWord.replace('"', '');
+            keyWord = keyWord.replace("'", '');
+            keyWordsMap[keyWord] = true;
+        }
+    }
+    return keyWordsMap;
 }
 
-returnAllData('./wantlist/wantlist.csv');
-getArtists('./wantlist/wantlist.csv')
+// returnAllData('./wantlist/wantlist.csv');
+// getArtists('./wantlist/wantlist.csv')
 
-const artists = getArtists('./wantlist/wantlist.csv');
+getArtists('./wantlist/wantlist.csv').then(artists => {
+    console.log(getKeyWords(artists));
+});
 
-module.exports = artists;
+// module.exports = artists;
