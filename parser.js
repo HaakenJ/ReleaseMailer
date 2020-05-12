@@ -71,11 +71,16 @@ function getArtists(path) {
 
         let artists = [];
         for (let i = 0; i < lines.length; i++) {
-            artists.push(lines[i][1]);
+            artists.push(lines[i]['Artist']);
         }
         console.log(artists);
         return artists;
     });
 };
 
-returnAllData('./wantlist/wantlist.csv');
+// returnAllData('./wantlist/wantlist.csv');
+// getArtists('./wantlist/wantlist.csv')
+
+const artists = getArtists('./wantlist/wantlist.csv');
+
+module.exports = artists;

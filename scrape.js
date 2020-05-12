@@ -4,8 +4,9 @@
 
 const cheerio = require("cheerio");
 const axios = require("axios");
+const artists = require('./parser');
 
-async function getTitleLink(filter) {
+function getTitleLink(filter) {
   const urlArr = [
     "https://old.reddit.com/r/vinylreleases",
     "https://old.reddit.com/r/VinylReleases/?count=25&after=t3_ehlmpi",
@@ -15,7 +16,7 @@ async function getTitleLink(filter) {
   let links = [];
 
   for (let i = 0; i < urlArr.length; i++) {
-    await axios.get(urlArr[i]).then(response => {
+    axios.get(urlArr[i]).then(response => {
 
       let $ = cheerio.load(response.data);
 
@@ -29,7 +30,7 @@ async function getTitleLink(filter) {
         let title = $(element).text();
         let link = $(element).attr("href");
 
-        if (link.includes(filter)) {
+        if (filter.includes(title)) {
           result = {
             page: i + 1,
             title: title,
@@ -38,9 +39,6 @@ async function getTitleLink(filter) {
         }
       });
 
-      // // Log the results
-      // console.log(`-----------Page ${i + 1}-----------`);
-      // console.log(results);
       links.push(result);
     })
   };
@@ -53,4 +51,4 @@ async function getTitleLink(filter) {
   })
 };
 
-getTitleLink();
+getTitleLink(artists);
