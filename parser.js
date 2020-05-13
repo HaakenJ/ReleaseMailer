@@ -126,7 +126,7 @@ function getKeyWords(artists) {
 // getArtists('./wantlist/wantlist.csv')
 
 getArtists('./wantlist/wantlist.csv').then(artists => {
-    console.log(getKeyWords(artists));
-});
+    const keywords = getKeyWords(artists);
 
-// module.exports = artists;
+    module.exports = keywords;
+});

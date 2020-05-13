@@ -6,7 +6,14 @@ const cheerio = require("cheerio");
 const axios = require("axios");
 const artists = require('./parser');
 
-function getTitleLink(filter) {
+/* 
+  Function to get title links and match them to keywords.
+
+  @param keywords - object literal of keywords with each word set to true.
+  @return array - array of object literals where each object is a matched link
+  with a title and a link property.
+*/
+function matchLinks(filter) {
   const urlArr = [
     "https://old.reddit.com/r/vinylreleases",
     "https://old.reddit.com/r/VinylReleases/?count=25&after=t3_ehlmpi",
@@ -51,4 +58,4 @@ function getTitleLink(filter) {
   })
 };
 
-getTitleLink(artists);
+matchLinks(artists);
