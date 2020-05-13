@@ -1,10 +1,6 @@
-// Using this template, the cheerio documentation,
-// and what you've learned in class so far, scrape a website
-// of your choice, save information from the page in a result array, and log it to the console.
-
 const cheerio = require("cheerio");
 const axios = require("axios");
-const artists = require('./parser');
+const Parser = require('./parser');
 
 /* 
   Function to get title links and match them to keywords.
@@ -13,37 +9,52 @@ const artists = require('./parser');
   @return array - array of object literals where each object is a matched link
   with a title and a link property.
 */
-function matchLinks(filter) {
+function matchLinks(keywords) {
   const urlArr = [
     "https://old.reddit.com/r/vinylreleases",
     "https://old.reddit.com/r/VinylReleases/?count=25&after=t3_ehlmpi",
     "https://old.reddit.com/r/VinylReleases/?count=50&after=t3_eemh1e"
   ];
 
-  let links = [];
+  keywords["lee"] = true;
+  
+  const links = [];
 
   for (let i = 0; i < urlArr.length; i++) {
     axios.get(urlArr[i]).then(response => {
 
-      let $ = cheerio.load(response.data);
-
-      // An empty array to save the data that we'll scrape
-      let result = {};
+      const $ = cheerio.load(response.data);
+      const result = {};
 
       // Loop through all the titles in the page
-      // Add the title and link if it is to a release that matches the filter.
-      $("a.title").each(function (iter, element) {
+      // Add title, link, and matched keyword if keyword is found in the title
+      $("a.title").each((iter, element) => {
 
-        let title = $(element).text();
-        let link = $(element).attr("href");
+        const title = $(element).text();
+        const link = $(element).attr("href");
+        const titleKeywords = title.split(" ");
 
-        if (filter.includes(title)) {
-          result = {
-            page: i + 1,
-            title: title,
-            link: link
-          };
+        for (let i = 0; i < titleKeywords.length; i++) {
+          if (keywords[titleKeywords[i]] === true) {
+            console.log("Found a match");
+            result = {
+              page: i + 1,
+              title: title,
+              link: link,
+              matchedKeyword: titleKeywords[i]
+            }
+            console.log(result);
+          }
+
         }
+
+        // if (keywords[title]) {
+        //   result = {
+        //     page: i + 1,
+        //     title: title,
+        //     link: link
+        //   };
+        // }
       });
 
       links.push(result);
@@ -58,4 +69,10 @@ function matchLinks(filter) {
   })
 };
 
-matchLinks(artists);
+Parser.getArtists('./wantlist/wantlist.csv')
+.then(artists => {
+  const keywords = Parser.getkeywords(artists);
+  matchLinks(keywords);
+})
+
+// matchLinks(keywords);
