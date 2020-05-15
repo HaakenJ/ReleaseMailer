@@ -15,35 +15,43 @@ function matchLinks(keywords) {
   
   const results = [];
 
-  axios.get(url).then(response => {
-    const $ = cheerio.load(response.data);
-    // Loop through all the titles in the page
-    // Add title, link, and matched keyword if keyword is found in the title
-    $("a.title").each((iter, element) => {
+  return new Promise ((resolve, reject) => {
+    axios.get(url).then(response => {
+      const $ = cheerio.load(response.data);
+      // Loop through all the titles in the page
+      // Add title, link, and matched keyword if keyword is found in the title
+      $("a.title").each((iter, element) => {
 
-      const title = $(element).text();
-      const link = $(element).attr("href");
-      const titleKeywords = title.split(" ");
+        const title = $(element).text();
+        const link = $(element).attr("href");
+        const titleKeywords = title.split(" ");
 
-      for (const word of titleKeywords) {
-        if (keywords[word] === true) {
-          console.log("Found a match");
-          const match = {
-            title: title,
-            link: link,
-            matchedKeyword: word
+        for (const word of titleKeywords) {
+          if (keywords[word] === true) {
+            const match = {
+              title: title,
+              link: link,
+              matchedKeyword: word
+            }
+            console.log(match);
+            results.push(match);
           }
-          console.log(match);
         }
-      }
-    });
+      })
+    })
+    resolve(results);
   })
 };
 
 Parser.getArtists('./wantlist/wantlist.csv')
 .then(artists => {
   const keywords = Parser.getkeywords(artists);
-  matchLinks(keywords);
+  matchLinks(keywords)
+  .then(matches => {
+    for (const match of matches) {
+      console.log(match);
+    }
+  })
 })
 
 // matchLinks(keywords);
