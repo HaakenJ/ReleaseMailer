@@ -16,6 +16,8 @@ function matchLinks(keywords, url) {
 
   keywords["lita"] = true;
   keywords["attic"] = true;
+  keywords["japan"] = true;
+  keywords["japanese"] = true;
 
   return new Promise ((resolve, reject) => {
     axios.get(url).then(response => {
