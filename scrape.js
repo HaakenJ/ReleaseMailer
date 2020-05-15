@@ -14,6 +14,9 @@ const url = "https://old.reddit.com/r/vinylreleases";
 function matchLinks(keywords, url) {
   const results = [];
 
+  keywords["lita"] = true;
+  keywords["attic"] = true;
+
   return new Promise ((resolve, reject) => {
     axios.get(url).then(response => {
       const $ = cheerio.load(response.data);
