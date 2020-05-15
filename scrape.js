@@ -9,10 +9,9 @@ const Parser = require('./parser');
   @return array - array of object literals where each object is a matched link
   with a title and a link property.
 */
+const url = "https://old.reddit.com/r/vinylreleases";
 
-function matchLinks(keywords) {
-  const url = "https://old.reddit.com/r/vinylreleases";
-  
+function matchLinks(keywords, url) {
   const results = [];
 
   return new Promise ((resolve, reject) => {
@@ -46,7 +45,7 @@ function matchLinks(keywords) {
 Parser.getArtists('./wantlist/wantlist.csv')
 .then(artists => {
   const keywords = Parser.getkeywords(artists);
-  matchLinks(keywords)
+  matchLinks(keywords, url)
   .then(matches => {
     for (const match of matches) {
       console.log(match);
