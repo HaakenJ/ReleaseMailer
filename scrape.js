@@ -20,7 +20,7 @@ function matchLinks(keywords, url) {
   keywords["japan"] = true;
   keywords["japanese"] = true;
 
-  return new Promise ((resolve, reject) => {
+  return new Promise (resolve => {
     axios.get(url).then(response => {
       const $ = cheerio.load(response.data);
       // Loop through all the titles in the page
