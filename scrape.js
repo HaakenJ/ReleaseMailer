@@ -10,6 +10,7 @@ const Parser = require('./parser');
   with a title and a link property.
 */
 const url = "https://old.reddit.com/r/vinylreleases";
+const url2 = "https://upcomingvinyl.com";
 
 function matchLinks(keywords, url) {
   const results = [];
@@ -37,13 +38,13 @@ function matchLinks(keywords, url) {
               link: link,
               matchedKeyword: word
             }
-            console.log(match);
+            // console.log(match);
             results.push(match);
           }
         }
       })
     })
-    resolve(results);
+    .then(() => resolve(results));
   })
 };
 
@@ -51,6 +52,12 @@ Parser.getArtists('./wantlist/wantlist.csv')
 .then(artists => {
   const keywords = Parser.getkeywords(artists);
   matchLinks(keywords, url)
+  .then(matches => {
+    for (const match of matches) {
+      console.log(match);
+    }
+  })
+  matchLinks(keywords, url2)
   .then(matches => {
     for (const match of matches) {
       console.log(match);
