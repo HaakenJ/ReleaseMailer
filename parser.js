@@ -114,7 +114,8 @@ function getkeywords(artists) {
         "green": true,
         "yellow": true,
         "orange": true,
-        "purple": true
+        "purple": true,
+        "pink": true
     }
     const keywordsMap = {};
     for (const artist of artists) {
