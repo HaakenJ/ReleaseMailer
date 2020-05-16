@@ -38,7 +38,6 @@ function matchLinks(keywords, url) {
               link: link,
               matchedKeyword: word
             }
-            // console.log(match);
             results.push(match);
           }
         }
@@ -64,5 +63,3 @@ Parser.getArtists('./wantlist/wantlist.csv')
     }
   })
 })
-
-// matchLinks(keywords);
