@@ -2,10 +2,11 @@ require("dotenv").config();
 const Parser = require("./parser");
 const matchLinks = require("./scrape");
 const nodemailer = require("nodemailer");
-const smtpTransport = require("nodemailer-smtp-transport");
-const xoauth2 = require("xoauth2");
+const { google } = require("googleapis");
+const OAuth2 = google.auth.OAuth2;
 
-const transport = nodemailer.createTransport(smtpTransport({
+const transport = nodemailer.createTransport(
+    smtpTransport(
     service: "Gmail",
     auth: {
         user: "haaken1234@gmail.com",
