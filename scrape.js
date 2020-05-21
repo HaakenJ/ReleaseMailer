@@ -1,6 +1,6 @@
 const cheerio = require("cheerio");
 const axios = require("axios");
-const Parser = require('./parser');
+// const Parser = require('./parser');
 
 /* 
   Function to get title links and match them to keywords.
@@ -12,7 +12,7 @@ const Parser = require('./parser');
 const url = "https://old.reddit.com/r/vinylreleases";
 const url2 = "https://upcomingvinyl.com";
 
-function matchLinks(keywords, url) {
+module.exports = function matchLinks(keywords, url) {
   const results = [];
 
   keywords["lita"] = true;
@@ -47,19 +47,19 @@ function matchLinks(keywords, url) {
   })
 };
 
-Parser.getArtists('./wantlist/wantlist.csv')
-.then(artists => {
-  const keywords = Parser.getkeywords(artists);
-  matchLinks(keywords, url)
-  .then(matches => {
-    for (const match of matches) {
-      console.log(match);
-    }
-  })
-  matchLinks(keywords, url2)
-  .then(matches => {
-    for (const match of matches) {
-      console.log(match);
-    }
-  })
-})
+// Parser.getArtists('./wantlist/wantlist.csv')
+// .then(artists => {
+//   const keywords = Parser.getkeywords(artists);
+//   matchLinks(keywords, url)
+//   .then(matches => {
+//     for (const match of matches) {
+//       console.log(match);
+//     }
+//   })
+//   matchLinks(keywords, url2)
+//   .then(matches => {
+//     for (const match of matches) {
+//       console.log(match);
+//     }
+//   })
+// })
