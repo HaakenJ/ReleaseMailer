@@ -9,8 +9,6 @@ const axios = require("axios");
   @return array - array of object literals where each object is a matched link
   with a title and a link property.
 */
-const url = "https://old.reddit.com/r/vinylreleases";
-const url2 = "https://upcomingvinyl.com";
 
 module.exports = function matchLinks(keywords, url) {
   const results = [];

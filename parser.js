@@ -78,7 +78,7 @@ function getArtists(path) {
     })
 };
 
-function getkeywords(artists) {
+function getKeywords(artists) {
     const skipWords = {
         "the": true,
         "and": true,
@@ -138,6 +138,6 @@ function getkeywords(artists) {
 // });
 
 module.exports = {
-    "getArtists": getArtists,
-    "getkeywords": getkeywords
+    getArtists: getArtists,
+    getKeywords: getKeywords
 };
