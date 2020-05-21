@@ -2,11 +2,13 @@ require("dotenv").config();
 const Parser = require("./parser");
 const matchLinks = require("./scrape");
 const nodemailer = require("nodemailer");
-const { google } = require("googleapis");
+const {
+    google
+} = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 
 // Set up the OAuth2 client
-const oauth2Client = new OAuth2 (
+const oauth2Client = new OAuth2(
     process.env.CLIENT_ID, // ClientID
     process.env.CLIENT_SECRET, // Client Secret
     "https://developers.google.com/oauthplayground" //Redirect URL
@@ -39,33 +41,44 @@ const mailOptions = {
     html: "<h1>Yo did this work!?</h1>"
 };
 
-smtpTransport.sendMail(mailOptions, (error, response) => {
-    error ? console.log(error) : console.log(response);
-    smtpTransport.close();
-})
+// Use Parser to get a list of artists from the wantlist
+Parser.getArtists("./wantlist/wantlist.csv")
+    .then(artists => {
+        // Pass the artists into getKeywords to generate an array of keywords
+        const keywords = Parser.getKeywords(artists);
 
-// Parser.getArtists("./wantlist/wantlist.csv")
-//     .then(artists => {
-//         const keywords = Parser.getKeywords(artists);
+        // URL's to scrape for new releases
+        const urls = ["https://old.reddit.com/r/vinylreleases", "https://upcomingvinyl.com"];
 
-//         const url = "https://old.reddit.com/r/vinylreleases";
-//         const url2 = "https://upcomingvinyl.com";
+        // Send emails for all matches found from the URL's
+        for (const url of urls) {
+            // Generate an array of matched links from the urls
+            matchLinks(keywords, url)
+                .then(matches => {
 
-//         matchLinks(keywords, url)
-//         .then(matches => {
-//             if (matches.length > 0) {
-//                 const mailOptions = {
-//                     from: "haaken1234@gmail.com",
-//                     to: "kramerhjohnson@gmail.com",
-//                     subject: "Current Vinyl Releases",
-//                     text: matches
-//                 }
+                    // If matches are found, send an email with the matched links
+                    if (matches.length > 0) {
+                        let resultString = "";
+                        for (const match of matches) {
+                            resultString += `Title: ${match.title} \n` +
+                                            `Link: ${match.link} \n` +
+                                            `Matched Keyword: ${match.matchedKeyword} \n` +
+                                            `------------------------------------------------- \n`
+                        }
 
-//                 transport.sendMail(mailOptions, (err, info) => {
-//                     if (err) console.error(err);
+                        const mailOptions = {
+                            from: "kramerhjohnson@gmail.com",
+                            to: "kramerhjohnson@gmail.com",
+                            subject: "Upcoming and Current Vinyl Releases",
+                            generateTextFromHTML: true,
+                            text: resultString
+                        };
 
-//                     console.log(`Message sent ${info.messageId}`);
-//                 })
-//             }
-//         })
-//     })
+                        smtpTransport.sendMail(mailOptions, (error, response) => {
+                            error ? console.log(error) : console.log(response);
+                            smtpTransport.close();
+                        })
+                    }
+                })
+        }
+    })
