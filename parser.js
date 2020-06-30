@@ -78,7 +78,7 @@ function getArtists(path) {
     })
 };
 
-function getkeywords(artists) {
+function getKeywords(artists) {
     const skipWords = {
         "the": true,
         "and": true,
@@ -109,8 +109,16 @@ function getkeywords(artists) {
         "true": true,
         "alex": true,
         "white": true,
-        "little": true
-    }
+        "little": true,
+        "grey": true,
+        "blue": true,
+        "green": true,
+        "yellow": true,
+        "orange": true,
+        "purple": true,
+        "pink": true,
+        "soul": true
+        }
     const keywordsMap = {};
     for (const artist of artists) {
         if (artist === undefined) continue;
@@ -132,6 +140,6 @@ function getkeywords(artists) {
 // });
 
 module.exports = {
-    "getArtists": getArtists,
-    "getkeywords": getkeywords
+    getArtists: getArtists,
+    getKeywords: getKeywords
 };

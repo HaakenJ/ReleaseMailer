@@ -9,70 +9,54 @@ const Parser = require('./parser');
   @return array - array of object literals where each object is a matched link
   with a title and a link property.
 */
-function matchLinks(keywords) {
-  const urlArr = [
-    "https://old.reddit.com/r/vinylreleases",
-    "https://old.reddit.com/r/VinylReleases/?count=25&after=t3_ehlmpi",
-    "https://old.reddit.com/r/VinylReleases/?count=50&after=t3_eemh1e"
-  ];
 
-  keywords["lee"] = true;
-  
-  const links = [];
+function matchLinks(keywords, url) {
+  const results = [];
 
-  for (let i = 0; i < urlArr.length; i++) {
-    axios.get(urlArr[i]).then(response => {
+  keywords["lita"] = true;
+  keywords["attic"] = true;
+  keywords["japan"] = true;
+  keywords["japanese"] = true;
 
-      const $ = cheerio.load(response.data);
-      const result = {};
+  return new Promise(resolve => {
+    axios.get(url).then(response => {
+        const $ = cheerio.load(response.data);
+        // Loop through all the titles in the page
+        // Add title, link, and matched keyword if keyword is found in the title
+        $("a.title").each((iter, element) => {
 
-      // Loop through all the titles in the page
-      // Add title, link, and matched keyword if keyword is found in the title
-      $("a.title").each((iter, element) => {
+          const title = $(element).text();
+          const link = $(element).attr("href");
+          const titleKeywords = title.split(" ");
 
-        const title = $(element).text();
-        const link = $(element).attr("href");
-        const titleKeywords = title.split(" ");
-
-        for (let i = 0; i < titleKeywords.length; i++) {
-          if (keywords[titleKeywords[i]] === true) {
-            console.log("Found a match");
-            result = {
-              page: i + 1,
-              title: title,
-              link: link,
-              matchedKeyword: titleKeywords[i]
+          for (const word of titleKeywords) {
+            if (keywords[word] === true) {
+              const match = {
+                title: title,
+                link: link,
+                matchedKeyword: word
+              }
+              results.push(match);
             }
-            console.log(result);
           }
-
-        }
-
-        // if (keywords[title]) {
-        //   result = {
-        //     page: i + 1,
-        //     title: title,
-        //     link: link
-        //   };
-        // }
-      });
-
-      links.push(result);
-    })
-  };
-
-  links.forEach(link => {
-    console.log(link.page + "\n");
-    console.log(link.title + "\n");
-    console.log(link.link + "\n");
-    console.log("----------------------------------");
+        })
+      })
+      .then(() => resolve(results));
   })
 };
 
-Parser.getArtists('./wantlist/wantlist.csv')
-.then(artists => {
-  const keywords = Parser.getkeywords(artists);
-  matchLinks(keywords);
-})
+// const url = "https://old.reddit.com/r/vinylreleases";
 
-// matchLinks(keywords);
+
+// Parser.getArtists('./wantlist/wantlist.csv')
+//   .then(artists => {
+//     const keywords = Parser.getKeywords(artists);
+//     matchLinks(keywords, url)
+//       .then(matches => {
+//         for (const match of matches) {
+//           console.log(match);
+//         }
+//       })
+//   })
+
+module.exports = matchLinks;
