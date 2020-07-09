@@ -109,6 +109,7 @@ function getKeywords(artists) {
         "true": true,
         "alex": true,
         "white": true,
+        "little": true,
         "grey": true,
         "blue": true,
         "green": true,
@@ -117,7 +118,7 @@ function getKeywords(artists) {
         "purple": true,
         "pink": true,
         "soul": true
-    }
+        }
     const keywordsMap = {};
     for (const artist of artists) {
         if (artist === undefined) continue;

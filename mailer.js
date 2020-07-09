@@ -2,6 +2,8 @@ require("dotenv").config();
 const Parser = require("./parser");
 const matchLinks = require("./scrape");
 const nodemailer = require("nodemailer");
+const path = require("path");
+
 const {
     google
 } = require("googleapis");
@@ -42,7 +44,7 @@ const mailOptions = {
 };
 
 // Use Parser to get a list of artists from the wantlist
-Parser.getArtists("./wantlist/wantlist.csv")
+Parser.getArtists(path.join(__dirname, "/wantlist/wantlist.csv"))
     .then(artists => {
         // Pass the artists into getKeywords to generate an array of keywords
         const keywords = Parser.getKeywords(artists);
