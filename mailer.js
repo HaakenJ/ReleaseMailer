@@ -38,6 +38,13 @@ const smtpTransport = nodemailer.createTransport({
 // URL's to scrape for new releases
 const urls = ["https://old.reddit.com/r/vinylreleases", "https://upcomingvinyl.com"];
 
+/* 
+  Function parse a list of artists for keywords, parse webpages for matches, 
+  and send email containing those matches.
+
+  @param wantlist - the directory of your discogs wantlist.
+  @return void - sends emails containing matches
+*/
 // Use Parser to get a list of artists from the wantlist
 Parser.getArtists(path.join(__dirname, "/wantlist/wantlist.csv"))
     .then(artists => {

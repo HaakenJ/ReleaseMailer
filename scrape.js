@@ -1,6 +1,5 @@
 const cheerio = require("cheerio");
 const axios = require("axios");
-const Parser = require('./parser');
 
 /* 
   Function to get title links and match them to keywords.
@@ -10,9 +9,11 @@ const Parser = require('./parser');
   with a title and a link property.
 */
 
-function matchLinks(keywords, url) {
+const matchLinks = (keywords, url) => {
   const results = [];
 
+  // I added these specific keywords manually because I like the light in the attic
+  // label's releases and am always looking for Japanese albums.
   keywords["lita"] = true;
   keywords["attic"] = true;
   keywords["japan"] = true;
@@ -44,19 +45,5 @@ function matchLinks(keywords, url) {
       .then(() => resolve(results));
   })
 };
-
-// const url = "https://old.reddit.com/r/vinylreleases";
-
-
-// Parser.getArtists('./wantlist/wantlist.csv')
-//   .then(artists => {
-//     const keywords = Parser.getKeywords(artists);
-//     matchLinks(keywords, url)
-//       .then(matches => {
-//         for (const match of matches) {
-//           console.log(match);
-//         }
-//       })
-//   })
 
 module.exports = matchLinks;

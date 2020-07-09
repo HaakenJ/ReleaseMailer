@@ -17,3 +17,7 @@ The script will query two urls for new releases:
     https://old.reddit.com/r/vinylreleases
     https://upcomingvinyl.com
 If you would like to add or remove these then update the 'url' variable in mailer.js
+
+If you would like to manually add keywords then do so in scrape.js in the matchLinks function.
+At the top of the function set: keywords["yourKeyword"] = true; 
+for every keyword you wish to add.  A few of my manual keywords have already been added.
