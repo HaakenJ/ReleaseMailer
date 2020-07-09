@@ -35,14 +35,6 @@ const smtpTransport = nodemailer.createTransport({
     }
 });
 
-const mailOptions = {
-    from: process.env.EMAIL,
-    to: process.env.EMAIL,
-    subject: "Node.js Email with Secure OAuth",
-    generateTextFromHTML: true,
-    html: "<h1>Yo did this work!?</h1>"
-};
-
 // Use Parser to get a list of artists from the wantlist
 Parser.getArtists(path.join(__dirname, "/wantlist/wantlist.csv"))
     .then(artists => {
