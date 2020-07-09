@@ -9,5 +9,11 @@ Set up a .env file with:
     CLIENT_SECRET= Your Client Secret
     REFRESH_TOKEN= Your refresh token
     EMAIL= The email you would like updates sent to
+    SERVICE= The email client you will use, e.g. Gmail
 
 Download your Discogs wantlist in csv format and save to the wantlist/ directory as a csv file named wantlist.csv
+
+The script will query two urls for new releases:
+    https://old.reddit.com/r/vinylreleases
+    https://upcomingvinyl.com
+If you would like to add or remove these then update the 'url' variable in mailer.js

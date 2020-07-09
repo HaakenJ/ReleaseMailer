@@ -24,7 +24,7 @@ const accessToken = oauth2Client.getAccessToken();
 
 // Set up the  SMTP transport using OAuth credentials
 const smtpTransport = nodemailer.createTransport({
-    service: "Gmail",
+    service: process.env.SERVICE,
     auth: {
         type: "OAuth2",
         user: process.env.EMAIL,
@@ -35,14 +35,14 @@ const smtpTransport = nodemailer.createTransport({
     }
 });
 
+// URL's to scrape for new releases
+const urls = ["https://old.reddit.com/r/vinylreleases", "https://upcomingvinyl.com"];
+
 // Use Parser to get a list of artists from the wantlist
 Parser.getArtists(path.join(__dirname, "/wantlist/wantlist.csv"))
     .then(artists => {
         // Pass the artists into getKeywords to generate an array of keywords
         const keywords = Parser.getKeywords(artists);
-
-        // URL's to scrape for new releases
-        const urls = ["https://old.reddit.com/r/vinylreleases", "https://upcomingvinyl.com"];
 
         // Send emails for all matches found from the URL's
         for (const url of urls) {
