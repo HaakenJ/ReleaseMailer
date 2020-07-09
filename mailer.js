@@ -25,7 +25,7 @@ const smtpTransport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
         type: "OAuth2",
-        user: "kramerhjohnson@gmail.com",
+        user: process.env.EMAIL,
         clientId: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
         refreshToken: process.env.REFRESH_TOKEN,
@@ -34,8 +34,8 @@ const smtpTransport = nodemailer.createTransport({
 });
 
 const mailOptions = {
-    from: "kramerhjohnson@gmail.com",
-    to: "kramerhjohnson@gmail.com",
+    from: process.env.EMAIL,
+    to: process.env.EMAIL,
     subject: "Node.js Email with Secure OAuth",
     generateTextFromHTML: true,
     html: "<h1>Yo did this work!?</h1>"
@@ -67,8 +67,8 @@ Parser.getArtists("./wantlist/wantlist.csv")
                         }
 
                         const mailOptions = {
-                            from: "kramerhjohnson@gmail.com",
-                            to: "kramerhjohnson@gmail.com",
+                            from: process.env.EMAIL,
+                            to: process.env.EMAIL,
                             subject: "Upcoming and Current Vinyl Releases",
                             generateTextFromHTML: true,
                             text: resultString
