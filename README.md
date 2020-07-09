@@ -29,3 +29,8 @@ and you may find it necessary to add more words in the future.  When you receive
 it will tell you which words were matched.  If you are receiving irrelevant matches using a certain keyword
 too often, please add it to skipWords and make a pull request to the original repo so that we can 
 continue to build a more accurate application.
+
+TODO: 
+* make a cli to set up the application for a new user
+* Have option to update certain functions or variables using the cli i.e. adding to skipWords.
+    - This is important to prevent users from having to mess with the implementation.
