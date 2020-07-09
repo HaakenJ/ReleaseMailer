@@ -21,3 +21,11 @@ If you would like to add or remove these then update the 'url' variable in maile
 If you would like to manually add keywords then do so in scrape.js in the matchLinks function.
 At the top of the function set: keywords["yourKeyword"] = true; 
 for every keyword you wish to add.  A few of my manual keywords have already been added.
+
+The function getKeywords() in parser.js contains an object literal of words to skip, named skipWords.
+This is necessary in order to skip certain words that are not helpful in finding a useful match.
+Words such as 'the', 'blue', 'band' etc. are included here.  I have compiled this list manually
+and you may find it necessary to add more words in the future.  When you receive an email with matches,
+it will tell you which words were matched.  If you are receiving irrelevant matches using a certain keyword
+too often, please add it to skipWords and make a pull request to the original repo so that we can 
+continue to build a more accurate application.
