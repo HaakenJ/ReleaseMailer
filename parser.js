@@ -1,29 +1,20 @@
-// This is a script to parse a discogs wantlist that is in csv format.
-// It should have functions to return an array of artists, albums, or releases.
-
-
 const fs = require("fs");
 
-// loop through all items in the csv
-// add each item to an array
-// when you reach a newline character,
-//     add the previous array to a larger array
-//     create a new array for the next line
+/* 
+    This script contains functions to parse the csv file and return specific
+    data from the file.
+*/
 
 
-let release = [],
-    wantArr = [];
+/*
+    Returns all data from the csv file. Most likely not useful for searching
+    a page directly as it would return too much.  Can be useful to get the 
+    data then do something else with it.
 
-// for (let i = 0; i < wantList.length; i++) {
-//     if (wantList[i] === "\n") {
-//         wantArr.push(release);
-//         release = [];
-//     } else {
-
-//     }
-// }
-
-function returnAllData(path) {
+    @param String - path to the csv file.
+    @return array - an array of the lines of the csv file
+*/
+const returnAllData = (path) => {
 
     fs.readFile(path, "utf-8", (err, allText) => {
         if (err) throw err;
@@ -47,7 +38,13 @@ function returnAllData(path) {
     });
 };
 
-function getArtists(path) {
+/*
+    Returns all artists from the csv file.
+
+    @param String - path to the csv file.
+    @return array - an array of the artists in the wantlist csv
+*/
+const getArtists = (path) => {
 
     return new Promise((resolve, reject) => {
         fs.readFile(path, "utf-8", (err, allText) => {
@@ -78,7 +75,16 @@ function getArtists(path) {
     })
 };
 
-function getKeywords(artists) {
+
+/*
+    Function to get an object literal of keywords from a wantlist csv. 
+    The keywords are created by spliting the specific words in the artists'
+    names.  This is to account for different wordings and spelling of artists.
+
+    @param array - an array of artists from the wantlist csv.
+    @return object literal - an object literal of keywords
+*/
+const getKeywords = (artists) => {
     const skipWords = {
         "the": true,
         "and": true,
@@ -131,13 +137,6 @@ function getKeywords(artists) {
     }
     return keywordsMap;
 }
-
-// returnAllData("./wantlist/wantlist.csv");
-// getArtists("./wantlist/wantlist.csv")
-
-// getArtists("./wantlist/wantlist.csv").then(artists => {
-//     const keywords = getkeywords(artists);
-// });
 
 module.exports = {
     getArtists: getArtists,
