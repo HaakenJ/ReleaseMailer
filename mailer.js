@@ -39,7 +39,7 @@ const smtpTransport = nodemailer.createTransport({
 const urls = ["https://old.reddit.com/r/vinylreleases", "https://upcomingvinyl.com"];
 
 /* 
-  Function parse a list of artists for keywords, parse webpages for matches, 
+  Function to parse a list of artists for keywords, parse webpages for matches, 
   and send email containing those matches.
 
   @param wantlist - the directory of your discogs wantlist.
