@@ -68,8 +68,8 @@ Parser.getArtists(path.join(__dirname, "/wantlist/wantlist.csv"))
                         }
 
                         const mailOptions = {
-                            from: process.env.EMAIL,
-                            to: process.env.EMAIL,
+                            from: process.env.FROMEMAIL,
+                            to: process.env.TOEMAIL,
                             subject: "Upcoming and Current Vinyl Releases",
                             generateTextFromHTML: true,
                             text: resultString
